@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Document</title>
+    <style>
+        .background{
+            background-color: lightgray;
+        }
+        .button{
+            width:100px;
+        }
+        .button:hover{
+            background:gray;
+            transition:1s;
+            
+        }
+        ul {
+            list-style:none;
+            
+        }
+        ul li {
+            color:red;
+            font-weight: 700;
+        }
+        .password_required{
+            text-align:left;
+            padding-left:30px;
+            display: none;
+        }
+        span{
+            color:black;
+        }
+        .password_required ul li.active{
+            color:green;
+        }
+        
+        
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="   crossorigin="anonymous"></script>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+
+</head>
+<body>
+    <div class="p-10 text-center container-fluid mt-5 background col-6 rounded border border-dark">
+        <h3 class="p-3">Sprawdź swoje hasło</h3> 
+        <form name="formularz" id="formularz">
+            <input type="password" id="password_validation" class="mt-3 rounded p-2 mb-5" placeholder="Wprowadź swoje hasło" required>
+            <input type="submit" class="button p-2 rounded-5 m-3" value="Sprawdź ">
+
+            <div class="password_required">
+                <ul>
+                    Hasło musi zawierać:
+                    <li class="mala"> &#9900; Jedna mała litera</li>
+                    <li class="duza">&#9900; Jedna duża litera</li>
+                    <li class="cyfra">&#9900; Jedna cyfra</li>
+                    <li class="specjalny">&#9900; Znak specjalny</li>
+                    <li class="znaki">&#9900; Minimum 8 znaków</li>
+                </ul>
+            </div>
+        </form>
+        
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+
+        
+
+        
+
+
+         $('#password_validation').on('focus' , function(){
+            $('.password_required').slideDown(); //wysuwanie listy z kryteriami hasłą
+         })
+         $('#password_validation').on('blur' , function(){
+            $('.password_required').slideUp();
+         })
+
+
+        $('#password_validation').on('keyup', function(){
+            passValue = $(this).val();
+    
+            if(passValue.match(/[a-z]/g)){ //sprawdzenie czy zawiera małe litery
+            $('.mala').addClass('active'); 
+            }else{
+                $('.mala').removeClass('active');
+            }
+            if(passValue.match(/[A-Z]/g)){ //sprawdzenie czy zawiera duże litery
+            $('.duza').addClass('active');
+            }else{
+                $('.duza').removeClass('active');
+            }
+            if(passValue.match(/[0-9]/g)){ //sprawdzenie czy zawiera cyfry
+            $('.cyfra').addClass('active');
+            }else{
+                $('.cyfra').removeClass('active');
+            }
+            if(passValue.match(/[!@#$%^&*]/g)){ //sprawdzenie czy zawiera znaki specjalne
+            $('.specjalny').addClass('active');
+            }else{
+                $('.specjalny').removeClass('active');
+            }
+            if(passValue.length >= 8 ){ // sprawdzenie czy hasło ma minimum 8 znaków
+            $('.znaki').addClass('active');
+            }else{
+                $('.znaki').removeClass('active');
+            }
+
+            function wykonajXML() {
+        $(document).ready(function() {
+        $.ajax({
+        type: "GET",
+        url: "passwords.xml",
+        dataType: "xml",
+        success: function(xml) {
+        $("#temp").append('<h3>' + console.log($(xml).find('passValue').length + '</h3>'));
+        $(xml).find('passValue').each(function() {
+        console.log($("#temp").append('<li>' + $(this).text() + '</li>'));
+        });
+        }
+        });
+        });
+        } // koniec wykonajXML()
+        function loadTXT() {
+        $("#temp").load("passwords.xml");
+        //$("#temp").load("persons.xml");
+        }
+        })
+    
+        </script>
+</body>
+</html>
